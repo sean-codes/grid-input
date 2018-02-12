@@ -29,7 +29,6 @@
             border:2px solid #0005;
             background:#999;
             box-shadow: 0px 0px 4px #0005, inset 0px 0px 4px #0003;
-            transition: top 0.25s, left 0.25s;
          }
       </style>
    </head>
@@ -42,7 +41,7 @@
          document.body.onload = function() {
             myInput = new InputGrid({
                input: document.querySelector('input'),
-               x: { label: 'x', min: -100, max: 100, step: 40, value: 20, grid:true },
+               x: { label: 'x', min: -100, max: 100, step: 40, value: -100, grid:true },
                y: { label: 'y', min: -100, max: 100, step: 40, value: 20, grid:true },
                change: function() {
                   console.log(this.value)
