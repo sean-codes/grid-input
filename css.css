@@ -1,0 +1,39 @@
+html, body{
+   padding:0px;
+   margin:0px;
+   background:#222;
+   font-family: 'Karla', sans-serif;
+   color:#FFF;
+}
+
+.gridinput-canvas {
+   width:100px;
+   height:100px;
+   background:#FFF;
+   box-sizing:border-box;
+   opacity:0;
+   pointer-events:none;
+   position:fixed;
+}
+
+.gridinput-canvas.show{
+   pointer-events:initial;
+   opacity:1;
+}
+.gridinput-point {
+   width:20px;
+   height:20px;
+   background:#0005;
+   border:1px solid #0006;
+   position:absolute;
+   border-radius:25%;
+   pointer-events: none;
+   box-sizing:border-box;
+   transform:translateX(-50%) translateY(-50%);
+   transition: all 0.25s;
+   opacity:0;
+}
+
+.gridinput-point.show{
+   opacity:1;
+}
