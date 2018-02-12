@@ -4,23 +4,39 @@
       <link rel="stylesheet" href="./css.css"></link>
 
       <style>
-         .container{
-            max-width:200px;
-            min-height:200px;
-            background:#465;
-            box-shadow:0px 3px 4px rgba(0, 0, 0, 0.25);
+         .container {
+            max-width:400px;
+            margin:20px auto;
+         }
+         input {
+            padding:5px 5px;
             border-radius:3px;
-            text-align:center;
-            margin:10px auto;
-            color:#FFF;
-            font-family: monospace;
-            padding:10px;
-            box-sizing:border-box;
+            border:3px solid #999;
+            box-shadow:0px 2px 4px #0005;
+         }
+
+         .gridinput-canvas {
+            border-radius:3px;
+            border:3px solid #999;
+            box-shadow:0px 2px 4px #0005;
+         }
+
+         .gridinput-point {
+            width:15px;
+            height:15px;
+            border-radius:10px;
+            padding:5px;
+            border:2px solid #0005;
+            background:#999;
+            box-shadow: 0px 0px 4px #0005, inset 0px 0px 4px #0003;
+            transition: top 0.25s, left 0.25s;
          }
       </style>
    </head>
    <body>
-      <input type="text"/>
+      <div class="container">
+         <input type="text"/>
+      </div>
       <script>
          var myInput;
          document.body.onload = function() {
@@ -34,6 +50,6 @@
             })
          }
       </script>
-      <script src="./js.js"></script>
+      <script src="js.js"></script>
    </body>
 </html>
