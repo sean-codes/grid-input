@@ -3,10 +3,11 @@ function InputGrid(options){
       this.change = options.change || function(){}
       this.x = options.x
       this.y = options.y
+      this.x.range = this.x.max - this.x.min
+      this.y.range = this.y.max - this.y.min
       this.width = options.width || 100
       this.height = options.height || 100
       this.step = options.step || 1
-
       this.value = {}
       this.open = false
       this.html = {
@@ -23,9 +24,10 @@ function InputGrid(options){
       document.body.appendChild(this.html.canvas)
       document.body.appendChild(this.html.point)
 
+      this.toggle(false)
       this.setupSize()
+      this.movePointToValue(this.x.value, this.y.value)
       if(options.gridLines) this.drawGrid()
-
 
       // Listen
       this.html.input.addEventListener('click', this.toggle.bind(this))
@@ -61,20 +63,10 @@ function InputGrid(options){
          this.ctx.stroke()
          x += xStep
       }
-      console.log(xStep)
-//       var count = this.size.grid
-//       var lineCount = this.size.grid
-//       while(x <= this.size.gridXSize + this.size.gridXMin) {
-//
-//          x += this.x.step*this.size.gridXRatio
-//       }
-
-//       var i = this.height; while(i-=this.y.step) {
-//          this.ctx.moveTo(0, i)
-//          this.ctx.lineTo(this.width, i)
-//          this.ctx.stroke()
-//       }
    }
+
+   this.down = function(e) { this.holding = true }
+   this.up = function(e) { this.holding = false }
 
    this.toggle = function() {
       this.open = this.open ? false : true
@@ -86,55 +78,65 @@ function InputGrid(options){
       if(this.open) this.html.canvas.focus()
    }
 
-   this.down = function(e) {
-      this.holding = true
-   }
-
    this.move = function(e) {
       if(!this.holding) return
-      this.setupSize()
+      // Get coordinates
       var mouseX = e.clientX - this.size.gridBox.left
       var mouseY = e.clientY - this.size.gridBox.top
+      // Get value
+      var [valueX,valueY] = this.posToValue(mouseX, mouseY)
+      // Move point
+      this.movePointToValue(valueX, valueY)
+      // Update Input
 
-      if(mouseX < this.size.gridXMin || mouseX > this.size.gridXMax) {
-         mouseX = (mouseX < this.size.gridXMin) ? this.size.gridXMin : this.size.gridXMax
-      }
-
-      if(mouseY < this.size.gridYMin || mouseY > this.size.gridYMax) {
-         mouseY = (mouseY < this.size.gridYMin) ? this.size.gridYMin : this.size.gridYMax
-      }
-
-      // Stepping
-      if(this.x.step && mouseX > this.size.gridXMin){
-         var xStep = this.x.step * this.size.gridXRatio
-         var xGrid = mouseX - this.size.gridXMin
-         mouseX -= (xGrid % xStep)
-      }
-      if(this.y.step && mouseY > this.size.gridYMin){
-         var yStep = this.y.step * this.size.gridYRatio
-         var yGrid = mouseY - this.size.gridYMin
-         mouseY -= (yGrid % yStep)
-      }
-
-      this.html.point.style.left = this.size.gridBox.left + mouseX+'px'
-      this.html.point.style.top = this.size.gridBox.top + mouseY+'px'
-
-
-      var percentX = (mouseX - this.size.gridXMin) / this.size.gridXSize
-      var percentY = (mouseY - this.size.gridYMin) / this.size.gridYSize
-      this.value[this.x.label || 'x'] = Math.round(percentX * (this.x.max-this.x.min+this.x.min))
-      this.value[this.y.label || 'y'] = Math.round(percentY * (this.y.max-this.y.min+this.y.min))
-      this.html.input.value = JSON.stringify(this.value)
+      // Trigger Change
       this.change()
    }
 
-   this.up = function(e) {
-      console.log('up')
-      this.holding = false
+   this.posToValue = function(x, y) {
+      this.setupSize()
+      if(x < this.size.gridXMin || x > this.size.gridXMax) {
+         x = (x < this.size.gridXMin) ? this.size.gridXMin : this.size.gridXMax
+      }
+
+      if(y < this.size.gridYMin || y > this.size.gridYMax) {
+         y = (y < this.size.gridYMin) ? this.size.gridYMin : this.size.gridYMax
+      }
+
+      var percentX = (x - this.size.gridXMin) / this.size.gridXSize
+      var percentY = (y - this.size.gridYMin) / this.size.gridYSize
+
+
+      // Steping: hugely over bloated can combine above if step is always included ( it is )
+      var stepZonesX = this.x.range / this.x.step
+      var stepZoneX = Math.min(Math.floor((stepZonesX+1) * percentX), stepZonesX)
+      percentX = stepZoneX / stepZonesX
+
+      var stepZonesY = this.y.range / this.y.step
+      var stepZoneY = Math.min(Math.floor((stepZonesY+1) * percentY), stepZonesY)
+      percentY = stepZoneY / stepZonesY
+
+      // set value first
+      return [
+         percentX * this.x.range + this.x.min,
+         percentY * this.y.range + this.y.min
+      ]
    }
 
-   this.movePoint = function(valueX, valueY) {
+   this.movePointToValue = function(valueX, valueY) {
+      var percentX = (valueX - this.x.min) / this.x.range
+      var percentY = (valueY - this.y.min) / this.y.range
+      var posX = this.size.gridXMin + (this.size.gridXSize*percentX)
+      var posY = this.size.gridYMin + (this.size.gridYSize*percentY)
 
+      this.html.point.style.left = this.size.gridBox.left + posX +'px'
+      this.html.point.style.top = this.size.gridBox.top + posY +'px'
+   }
+
+   this.setInputValue = function() {
+      this.value[this.x.label || 'x'] = Math.round(percentX * (this.x.max-this.x.min+this.x.min))
+      this.value[this.y.label || 'y'] = Math.round(percentY * (this.y.max-this.y.min+this.y.min))
+      this.html.input.value = JSON.stringify(this.value)
    }
 
    this.construct(options)
