@@ -28,6 +28,7 @@ function InputGrid(options){
       this.setupSize()
       this.drawGrid()
       this.movePointToValue(this.x.value, this.y.value)
+      this.setInputValue(this.x.value, this.y.value)
 
       // Listen
       this.html.input.addEventListener('click', this.toggle.bind(this))
@@ -59,8 +60,8 @@ function InputGrid(options){
          var xStep = this.size.gridXSize/((this.x.max - this.x.min)/this.x.step)
          var x = this.size.gridXMin
          while(x <= this.size.gridXMax) {
-            this.ctx.moveTo(x, 0)
-            this.ctx.lineTo(x, this.height)
+            this.ctx.moveTo(Math.floor(x)+0.5, 0)
+            this.ctx.lineTo(Math.floor(x)+0.5, this.height)
             this.ctx.stroke()
             x += xStep
          }
@@ -70,8 +71,8 @@ function InputGrid(options){
          var yStep = this.size.gridXSize/((this.y.max - this.y.min)/this.y.step)
          var y = this.size.gridXMin
          while(y <= this.size.gridXMax) {
-            this.ctx.moveTo(0, y)
-            this.ctx.lineTo(this.height, y)
+            this.ctx.moveTo(0, Math.floor(y)+0.5)
+            this.ctx.lineTo(this.height, Math.floor(y)+0.5)
             this.ctx.stroke()
             y += yStep
          }
@@ -87,7 +88,7 @@ function InputGrid(options){
       this.html.point.classList.toggle('show', this.open)
       var inputBox = this.html.input.getBoundingClientRect()
       this.html.canvas.style.top = inputBox.top + inputBox.height + 'px'
-      this.html.canvas.style.left = inputBox.left + 10 + 'px'
+      this.html.canvas.style.left = inputBox.left + 'px'
       if(this.open) this.html.canvas.focus()
    }
 
@@ -101,7 +102,7 @@ function InputGrid(options){
       // Move point
       this.movePointToValue(valueX, valueY)
       // Update Input
-
+      this.setInputValue(valueX, valueY)
       // Trigger Change
       this.change()
    }
@@ -146,9 +147,9 @@ function InputGrid(options){
       this.html.point.style.top = this.size.gridBox.top + posY +'px'
    }
 
-   this.setInputValue = function() {
-      this.value[this.x.label || 'x'] = Math.round(percentX * (this.x.max-this.x.min+this.x.min))
-      this.value[this.y.label || 'y'] = Math.round(percentY * (this.y.max-this.y.min+this.y.min))
+   this.setInputValue = function(valueX, valueY) {
+      this.value[this.x.label || 'x'] = valueX
+      this.value[this.y.label || 'y'] = valueY
       this.html.input.value = JSON.stringify(this.value)
    }
 
