@@ -11,7 +11,7 @@ html, body{
    height:100px;
    background:#FFF;
    box-sizing:border-box;
-   ccopacity:0;
+   opacity:0;
    pointer-events:none;
    position:fixed;
    user-select:none;
@@ -33,7 +33,7 @@ html, body{
    pointer-events: none;
    box-sizing:border-box;
    transform:translateX(-50%) translateY(-50%);
-   ccopacity:0;
+   opacity:0;
 }
 
 .gridinput-point.show{
