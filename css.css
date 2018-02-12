@@ -26,8 +26,8 @@ html, body{
 .gridinput-point {
    width:20px;
    height:20px;
-   background:#0005;
-   border:1px solid #0006;
+   background:#777;
+   border:1px solid #666;
    position:absolute;
    border-radius:25%;
    pointer-events: none;
