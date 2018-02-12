@@ -24,7 +24,6 @@ function InputGrid(options){
       document.body.appendChild(this.html.canvas)
       document.body.appendChild(this.html.point)
 
-      this.toggle(false)
       this.setupSize()
       this.drawGrid()
       this.movePointToValue(this.x.value, this.y.value)
@@ -90,6 +89,8 @@ function InputGrid(options){
       this.html.canvas.style.top = inputBox.top + inputBox.height + 'px'
       this.html.canvas.style.left = inputBox.left + 'px'
       if(this.open) this.html.canvas.focus()
+      this.setupSize()
+      this.movePointToValue(this.x.value, this.y.value)
    }
 
    this.move = function(e) {
@@ -108,7 +109,6 @@ function InputGrid(options){
    }
 
    this.posToValue = function(x, y) {
-      this.setupSize()
       if(x < this.size.gridXMin || x > this.size.gridXMax) {
          x = (x < this.size.gridXMin) ? this.size.gridXMin : this.size.gridXMax
       }
