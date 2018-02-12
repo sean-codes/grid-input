@@ -26,8 +26,8 @@ function InputGrid(options){
 
       this.toggle(false)
       this.setupSize()
+      this.drawGrid()
       this.movePointToValue(this.x.value, this.y.value)
-      if(options.gridLines) this.drawGrid()
 
       // Listen
       this.html.input.addEventListener('click', this.toggle.bind(this))
@@ -55,13 +55,26 @@ function InputGrid(options){
 
    this.drawGrid = function() {
       this.ctx = this.html.canvas.getContext('2d')
-      var xStep = this.size.gridXSize/((this.x.max - this.x.min)/this.x.step)
-      var x = this.size.gridXMin
-      while(x <= this.size.gridXMax) {
-         this.ctx.moveTo(x, 0)
-         this.ctx.lineTo(x, this.height)
-         this.ctx.stroke()
-         x += xStep
+      if(this.x.grid) {
+         var xStep = this.size.gridXSize/((this.x.max - this.x.min)/this.x.step)
+         var x = this.size.gridXMin
+         while(x <= this.size.gridXMax) {
+            this.ctx.moveTo(x, 0)
+            this.ctx.lineTo(x, this.height)
+            this.ctx.stroke()
+            x += xStep
+         }
+      }
+      if(this.y.grid) {
+         // Duplicate. needs work just trying to pass
+         var yStep = this.size.gridXSize/((this.y.max - this.y.min)/this.y.step)
+         var y = this.size.gridXMin
+         while(y <= this.size.gridXMax) {
+            this.ctx.moveTo(0, y)
+            this.ctx.lineTo(this.height, y)
+            this.ctx.stroke()
+            y += yStep
+         }
       }
    }
 
