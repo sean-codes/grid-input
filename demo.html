@@ -26,9 +26,8 @@
          document.body.onload = function() {
             myInput = new InputGrid({
                input: document.querySelector('input'),
-               gridLines: true,
-               x: { label: 'x', min: -100, max: 100, step: 100, value: 0 },
-               y: { label: 'y', min: -100, max: 100, step: 50, value: 0 },
+               x: { label: 'x', min: -100, max: 100, step: 40, value: 20, grid:true },
+               y: { label: 'y', min: -100, max: 100, step: 40, value: 20, grid:true },
                change: function() {
                   console.log(this.value)
                }
