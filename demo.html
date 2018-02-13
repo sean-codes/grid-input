@@ -15,10 +15,18 @@
             box-shadow:0px 2px 4px #0005;
          }
 
-         .gridinput-canvas {
+         .gridinput-wrapper {
             border-radius:3px;
             border:3px solid #999;
             box-shadow:0px 2px 4px #0005;
+         }
+
+         .gridinput-horizontal {
+            border-left-style:dotted!important;
+         }
+
+         .gridinput-vertical {
+            border-top-style:dotted!important;
          }
 
          .gridinput-point {
@@ -29,12 +37,13 @@
             border:2px solid #0005;
             background:#999;
             box-shadow: 0px 0px 4px #0005, inset 0px 0px 4px #0003;
+            transition: all 0.1s;
          }
       </style>
    </head>
    <body>
       <div class="container">
-         <input type="text"/>
+         <input type="range2d"/>
       </div>
       <script>
          var myInput;
