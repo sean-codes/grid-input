@@ -57,7 +57,6 @@ function InputGrid(options){
    }
 
    this.drawGrid = function() {
-      //this.ctx = this.html.canvas.getContext('2d')
       if(this.grid) {
          var x = this.size.gridMin
          var xStep = this.size.gridSize/((this.max - this.min)/this.step)
