@@ -43,18 +43,13 @@
    </head>
    <body>
       <div class="container">
-         <input type="range2d"/>
+         <input type="grid" valueX="0" valueY="0" min='0' max='80' step="40"/>
       </div>
       <script>
          var myInput;
          document.body.onload = function() {
-            myInput = new InputGrid({
-               input: document.querySelector('input'),
-               x: { label: 'x', min: -100, max: 100, step: 40, value: -100, grid:true },
-               y: { label: 'y', min: -100, max: 100, step: 40, value: 20, grid:true },
-               change: function() {
-                  console.log(this.value)
-               }
+            var myInput = InputGrid({
+               input: document.querySelector('[type=grid]')
             })
          }
       </script>
