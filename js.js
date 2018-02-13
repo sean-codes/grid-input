@@ -3,6 +3,7 @@ function InputGrid(options){
       this.change = options.change || function(){}
       this.x = options.x
       this.y = options.y
+      this.grid = options.grid || true
       this.x.range = this.x.max - this.x.min
       this.y.range = this.y.max - this.y.min
       this.width = options.width || 100
@@ -12,17 +13,18 @@ function InputGrid(options){
       this.open = false
       this.html = {
          input: options.input,
-         canvas: document.createElement('canvas'),
+         wrapper: document.createElement('wrapper'),
+         canvas: document.createElement('div'),
          point: document.createElement('point')
       }
 
       this.html.canvas.tabIndex = 1
+      this.html.wrapper.classList.add('gridinput-wrapper')
       this.html.canvas.classList.add('gridinput-canvas')
-      this.html.canvas.width = this.width
-      this.html.canvas.height = this.height
       this.html.point.classList.add('gridinput-point')
-      document.body.appendChild(this.html.canvas)
-      document.body.appendChild(this.html.point)
+      this.html.wrapper.appendChild(this.html.canvas)
+      this.html.canvas.appendChild(this.html.point)
+      document.body.appendChild(this.html.wrapper)
 
       this.setupSize()
       this.drawGrid()
@@ -30,9 +32,9 @@ function InputGrid(options){
       this.setInputValue(this.x.value, this.y.value)
 
       // Listen
-      this.html.input.addEventListener('click', this.toggle.bind(this))
+      this.html.input.addEventListener('click', this.inputClick.bind(this))
+      this.html.canvas.addEventListener('blur', this.canvasBlur.bind(this))
       this.html.canvas.addEventListener('mousedown', this.down.bind(this))
-      this.html.canvas.addEventListener('blur', this.toggle.bind(this))
       document.addEventListener('mousemove', this.move.bind(this))
       document.addEventListener('mouseup', this.up.bind(this))
    }
@@ -54,25 +56,26 @@ function InputGrid(options){
    }
 
    this.drawGrid = function() {
-      this.ctx = this.html.canvas.getContext('2d')
-      if(this.x.grid) {
-         var xStep = this.size.gridXSize/((this.x.max - this.x.min)/this.x.step)
+      //this.ctx = this.html.canvas.getContext('2d')
+      if(this.grid) {
          var x = this.size.gridXMin
+         var xStep = this.size.gridXSize/((this.x.max - this.x.min)/this.x.step)
          while(x <= this.size.gridXMax) {
-            this.ctx.moveTo(Math.floor(x)+0.5, 0)
-            this.ctx.lineTo(Math.floor(x)+0.5, this.height)
-            this.ctx.stroke()
+            var horizontalGrid = document.createElement('div')
+            horizontalGrid.classList.add('gridinput-horizontal')
+            horizontalGrid.style.left = x + 'px'
+            this.html.canvas.appendChild(horizontalGrid)
             x += xStep
          }
-      }
-      if(this.y.grid) {
+
          // Duplicate. needs work just trying to pass
-         var yStep = this.size.gridXSize/((this.y.max - this.y.min)/this.y.step)
          var y = this.size.gridXMin
+         var yStep = this.size.gridXSize/((this.y.max - this.y.min)/this.y.step)
          while(y <= this.size.gridXMax) {
-            this.ctx.moveTo(0, Math.floor(y)+0.5)
-            this.ctx.lineTo(this.height, Math.floor(y)+0.5)
-            this.ctx.stroke()
+            var verticalGrid = document.createElement('div')
+            verticalGrid.classList.add('gridinput-vertical')
+            verticalGrid.style.top = y + 'px'
+            this.html.canvas.appendChild(verticalGrid)
             y += yStep
          }
       }
@@ -81,13 +84,21 @@ function InputGrid(options){
    this.down = function(e) { this.holding = true }
    this.up = function(e) { this.holding = false }
 
-   this.toggle = function() {
-      this.open = this.open ? false : true
-      this.html.canvas.classList.toggle('show', this.open)
-      this.html.point.classList.toggle('show', this.open)
+   this.inputClick = function() {
+      this.toggle(!this.open)
+   }
+
+   this.canvasBlur = function(e) {
+      if(e.relatedTarget == this.html.input) return
+      this.toggle(false)
+   }
+
+   this.toggle = function(open) {
+      this.open = open
+      this.html.wrapper.classList.toggle('show', this.open)
       var inputBox = this.html.input.getBoundingClientRect()
-      this.html.canvas.style.top = inputBox.top + inputBox.height + 'px'
-      this.html.canvas.style.left = inputBox.left + 'px'
+      this.html.wrapper.style.top = inputBox.top + inputBox.height + 'px'
+      this.html.wrapper.style.left = inputBox.left + 'px'
       if(this.open) this.html.canvas.focus()
       this.setupSize()
       this.movePointToValue(this.x.value, this.y.value)
@@ -143,8 +154,8 @@ function InputGrid(options){
       var posX = this.size.gridXMin + (this.size.gridXSize*percentX)
       var posY = this.size.gridYMin + (this.size.gridYSize*percentY)
 
-      this.html.point.style.left = this.size.gridBox.left + posX +'px'
-      this.html.point.style.top = this.size.gridBox.top + posY +'px'
+      this.html.point.style.left = posX +'px'
+      this.html.point.style.top = posY +'px'
    }
 
    this.setInputValue = function(valueX, valueY) {
