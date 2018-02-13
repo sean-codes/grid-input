@@ -41,6 +41,7 @@ function InputGrid(options){
       this.html.input.addEventListener('click', this.inputClick.bind(this))
       this.html.canvas.addEventListener('blur', this.canvasBlur.bind(this))
       this.html.canvas.addEventListener('mousedown', this.down.bind(this))
+      this.html.canvas.addEventListener('keyup', this.keyup.bind(this))
       document.addEventListener('mousemove', this.move.bind(this))
       document.addEventListener('mouseup', this.up.bind(this))
    }
@@ -79,6 +80,14 @@ function InputGrid(options){
             y += yStep
          }
       }
+   }
+   this.keyup = function(e) {
+      this.value.x += this.step * { '37': -1, '39': 1 }[e.keyCode] || 0
+      this.value.y += this.step * { '38': -1, '40': 1 }[e.keyCode] || 0
+      this.value.x = Math.max(Math.min(this.value.x, this.max), this.min)
+      this.value.y = Math.max(Math.min(this.value.y, this.max), this.min)
+      this.movePointToValue(this.value.x, this.value.y)
+      this.setInputValue(this.value.x, this.value.y)
    }
 
    this.down = function(e) { this.holding = true }
@@ -156,9 +165,8 @@ function InputGrid(options){
 
    this.setInputValue = function(valueX, valueY) {
       this.value = {}
-      this.value[this.labelX || 'x'] = valueX
-      this.value[this.labelY || 'y'] = valueY
-      console.log(valueX)
+      this.value[this.labelX || 'x'] = Number(valueX)
+      this.value[this.labelY || 'y'] = Number(valueY)
       this.html.input.value = JSON.stringify(this.value)
    }
 
