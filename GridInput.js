@@ -1,4 +1,4 @@
-function InputGrid(options){
+function GridInput(options){
    this.construct = function(options) {
 		var options = options || {}
 		this.input = options.input || document.querySelector('[type=grid]')
