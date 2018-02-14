@@ -12,7 +12,7 @@ tape('default options set', (test) => {
 	var grid = new GridInput()
 
 	test.equal(grid.input, inputDefault, 'Finds an input with type="grid"')
-	test.equal(grid.grid, true, 'Grid is true')
+	test.equal(grid.grid, 'true', 'Grid is "true"')
 	test.equal(grid.min, 0, 'Min is 0')
 	test.equal(grid.max, 100, 'Max is 100')
 	test.equal(grid.step, 10, 'Step is 10')
@@ -28,7 +28,7 @@ tape('changing options', (test) => {
 	var grid = new GridInput({ input: inputOptions })
 
 	test.equal(grid.input, inputOptions, 'Finds an input with type="grid"')
-	test.equal(grid.grid, true, 'Grid is true')
+	test.equal(grid.grid, 'true', 'Grid is "true"')
 	test.equal(grid.min, -100, 'Min is 0')
 	test.equal(grid.max, 100, 'Max is 100')
 	test.equal(grid.step, 20, 'Step is 10')
@@ -44,7 +44,6 @@ tape('changing options', (test) => {
 	try {
 		var grid = new GridInput({ input: 'break' })
 	} catch(e) {
-		console.log(e)
 		test.pass('throws when input does not exist')
 		test.end();
 	}

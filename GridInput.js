@@ -2,9 +2,8 @@ function InputGrid(options){
    this.construct = function(options) {
 		var options = options || {}
 		this.input = options.input || document.querySelector('[type=grid]')
-		console.log(typeof this.input)
-		if(!this.input) throw "No input provided as option { input: inputElement} or found [type=grid]"
-      this.grid = options.grid || true
+		if(!this.input.hasAttribute) throw "No input provided as option { input: inputElement} or found [type=grid]"
+      this.grid = this.input.hasAttribute('grid') ? this.input.getAttribute('grid') : 'true'
       this.min = Number(this.input.getAttribute('min') || 0)
       this.max = Number(this.input.getAttribute('max') || 100)
       this.step = Number(this.input.getAttribute('step') || 10)
@@ -61,7 +60,7 @@ function InputGrid(options){
    }
 
    this.drawGrid = function() {
-      if(this.grid) {
+      if(this.grid == 'true') {
          var coords = [
             { 'class': 'gridinput-horizontal', 'prop': 'left' },
             { 'class': 'gridinput-vertical', 'prop': 'top' }
@@ -79,7 +78,7 @@ function InputGrid(options){
          }
       }
    }
-   
+
    this.keyup = function(e) {
       this.value.x += this.step * { '37': -1, '39': 1 }[e.keyCode] || 0
       this.value.y += this.step * { '38': -1, '40': 1 }[e.keyCode] || 0
@@ -172,5 +171,5 @@ function InputGrid(options){
    this.construct(options)
 }
 
-// ES6 Export
-if(module) module.exports = InputGrid
+// ES6 Exporta
+if(typeof module != 'undefined'){ module.exports = InputGrid }
