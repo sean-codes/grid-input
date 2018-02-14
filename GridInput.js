@@ -172,4 +172,4 @@ function GridInput(options){
 }
 
 // ES6 Exporta
-if(typeof module != 'undefined'){ module.exports = InputGrid }
+if(typeof module != 'undefined'){ module.exports = GridInput }
