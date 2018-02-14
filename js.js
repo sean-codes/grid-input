@@ -59,28 +59,24 @@ function InputGrid(options){
 
    this.drawGrid = function() {
       if(this.grid) {
-         var x = this.size.gridMin
-         var xStep = this.size.gridSize/((this.max - this.min)/this.step)
-         while(x <= this.size.gridMax) {
-            var horizontalGrid = document.createElement('div')
-            horizontalGrid.classList.add('gridinput-horizontal')
-            horizontalGrid.style.left = x + 'px'
-            this.html.canvas.appendChild(horizontalGrid)
-            x += xStep
-         }
-
-         // Duplicate. needs work just trying to pass
-         var y = this.size.gridMin
-         var yStep = this.size.gridSize/((this.max - this.min)/this.step)
-         while(y <= this.size.gridMax) {
-            var verticalGrid = document.createElement('div')
-            verticalGrid.classList.add('gridinput-vertical')
-            verticalGrid.style.top = y + 'px'
-            this.html.canvas.appendChild(verticalGrid)
-            y += yStep
+         var coords = [
+            { 'class': 'gridinput-horizontal', 'prop': 'left' },
+            { 'class': 'gridinput-vertical', 'prop': 'top' }
+         ]
+         for(var coord of coords){
+            var pos = this.size.gridMin
+            var step = this.size.gridSize/((this.max - this.min)/this.step)
+            while(pos <= this.size.gridMax) {
+               var horizontalGrid = document.createElement('div')
+               horizontalGrid.classList.add(coord.class)
+               horizontalGrid.style[coord.prop] = pos + 'px'
+               this.html.canvas.appendChild(horizontalGrid)
+               pos += step
+            }
          }
       }
    }
+   
    this.keyup = function(e) {
       this.value.x += this.step * { '37': -1, '39': 1 }[e.keyCode] || 0
       this.value.y += this.step * { '38': -1, '40': 1 }[e.keyCode] || 0
