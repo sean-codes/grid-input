@@ -1,0 +1,31 @@
+{
+  "name": "grid-input",
+  "version": "1.0.0",
+  "description": "range input in 2 dimensions",
+  "main": "js.js",
+  "scripts": {
+    "test": "browserify test.js | tape-run | tap-spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sean-codes/grid-input.git"
+  },
+  "keywords": [
+    "range",
+    "input",
+    "grid",
+    "2d"
+  ],
+  "author": "sean-codes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sean-codes/grid-input/issues"
+  },
+  "homepage": "https://github.com/sean-codes/grid-input#readme",
+  "devDependencies": {
+    "browserify": "^16.1.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0",
+    "tape-run": "^3.0.4"
+  }
+}

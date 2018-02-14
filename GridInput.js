@@ -1,18 +1,21 @@
 function InputGrid(options){
    this.construct = function(options) {
-      !options.input && document.querySelector('[type=grid]')
+		var options = options || {}
+		this.input = options.input || document.querySelector('[type=grid]')
+		console.log(typeof this.input)
+		if(!this.input) throw "No input provided as option { input: inputElement} or found [type=grid]"
       this.grid = options.grid || true
-      this.min = Number(options.input.getAttribute('min') || 0)
-      this.max = Number(options.input.getAttribute('max') || 100)
-      this.step = Number(options.input.getAttribute('step') || 10)
-      this.labelX = options.input.getAttribute('labelx') || 'x'
-      this.labelY = options.input.getAttribute('labely') || 'y'
-      this.valueX = options.input.getAttribute('valueX') || 0
-      this.valueY = options.input.getAttribute('valueY') || 0
+      this.min = Number(this.input.getAttribute('min') || 0)
+      this.max = Number(this.input.getAttribute('max') || 100)
+      this.step = Number(this.input.getAttribute('step') || 10)
+		this.valueX = Number(this.input.getAttribute('valueX') || 0)
+		this.valueY = Number(this.input.getAttribute('valueY') || 0)
+      this.labelX = this.input.getAttribute('labelX') || 'x'
+      this.labelY = this.input.getAttribute('labelY') || 'y'
       this.range = this.max - this.min
       this.open = false
 
-      this.setupHTML(options.input)
+      this.setupHTML(this.input)
       this.movePointToValue(this.valueX, this.valueY)
       this.setInputValue(this.valueX, this.valueY)
    }
@@ -168,3 +171,6 @@ function InputGrid(options){
 
    this.construct(options)
 }
+
+// ES6 Export
+if(module) module.exports = InputGrid
