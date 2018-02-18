@@ -1,11 +1,8 @@
 .gridinput-wrapper {
   position:fixed;
   width:100px; height:100px;
-  background:#FFF;
-  cursor:move;
-  user-select:none;
-  -webkit-user-select:none;
   pointer-events:none;
+  cursor:move;
   opacity:0;
 }
 
@@ -17,6 +14,9 @@
 .gridinput-wrapper .gridinput-canvas {
   width:100%;
   height:100%;
+  z-index:10001;
+  position:absolute;
+  background:#FFF;
 }
 
 .gridinput-wrapper .gridinput-canvas .gridinput-horizontal {
