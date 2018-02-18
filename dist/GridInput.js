@@ -14,6 +14,10 @@ function GridInput(options){
       this.range = this.max - this.min
       this.open = false
 
+      // Onchange Event
+      this.event = document.createEvent('HTMLEvents')
+      this.event.initEvent('change', 1, 1)
+
       this.setupHTML(this.input)
       this.movePointToValue(this.valueX, this.valueY)
       this.setInputValue(this.valueX, this.valueY)
@@ -36,6 +40,7 @@ function GridInput(options){
       this.html.canvas.appendChild(this.html.point)
       document.body.appendChild(this.html.wrapper)
 
+      // Size / Grid
       this.setupSize()
       this.drawGrid()
 
@@ -166,6 +171,7 @@ function GridInput(options){
       this.value[this.labelX || 'x'] = Number(valueX)
       this.value[this.labelY || 'y'] = Number(valueY)
       this.html.input.value = JSON.stringify(this.value)
+      this.html.input.dispatchEvent(this.event)
    }
 
    this.construct(options)
