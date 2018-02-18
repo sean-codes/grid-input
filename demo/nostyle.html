@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+   <head>
+      <link rel="stylesheet" href="../dist/GridInput.css"></link>
+   </head>
+   <body>
+      <div class="container">
+         <input type="grid" valueX="40" valueY="40" min='0' max='80' step="20"/>
+      </div>
+      <script>
+         var myInput;
+         document.body.onload = function() {
+            var myInput = GridInput({
+               input: document.querySelector('[type=grid]')
+            })
+         }
+      </script>
+      <script src="../dist/GridInput.js"></script>
+   </body>
+</html>
