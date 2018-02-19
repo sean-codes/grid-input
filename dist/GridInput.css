@@ -12,12 +12,9 @@
    opacity:1;
 }
 
-.gridinput-wrapper.show ~ *::selection{
-   background:transparent;
-}
-
 .gridinput-wrapper.show ~ *{
    user-select:none;
+   -moz-user-select:none;
 }
 
 .gridinput-wrapper .gridinput-canvas {
