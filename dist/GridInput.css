@@ -1,14 +1,23 @@
 .gridinput-wrapper {
-  position:fixed;
-  width:100px; height:100px;
-  pointer-events:none;
-  cursor:move;
-  opacity:0;
+   cursor:move;
+   position:absolute;
+   pointer-events:none;
+   width:100px; height:100px;
+   overflow:hidden;
+   opacity:0;
 }
 
-.gridinput-wrapper.show{
-  pointer-events:initial;
-  opacity:1;
+.gridinput-wrapper.show {
+   pointer-events:initial;
+   opacity:1;
+}
+
+.gridinput-wrapper.show ~ *::selection{
+   background:transparent;
+}
+
+.gridinput-wrapper.show ~ *{
+   user-select:none;
 }
 
 .gridinput-wrapper .gridinput-canvas {
@@ -16,7 +25,7 @@
   height:100%;
   z-index:10001;
   position:absolute;
-  background:#FFF;
+  background:red;
 }
 
 .gridinput-wrapper .gridinput-canvas .gridinput-horizontal {

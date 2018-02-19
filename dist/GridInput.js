@@ -27,18 +27,20 @@ function GridInput(options){
    this.setupHTML = function(input) {
       this.html = {
          input: input,
+         container: document.createElement('div'),
          wrapper: document.createElement('div'),
          canvas: document.createElement('div'),
          point: document.createElement('div')
       }
 
       this.html.canvas.tabIndex = 1
+      this.html.container.tabIndex = -1;
       this.html.wrapper.classList.add('gridinput-wrapper')
       this.html.canvas.classList.add('gridinput-canvas')
       this.html.point.classList.add('gridinput-point')
       this.html.wrapper.appendChild(this.html.canvas)
       this.html.canvas.appendChild(this.html.point)
-      document.body.appendChild(this.html.wrapper)
+      document.body.insertBefore(this.html.wrapper, document.body.firstChild)
 
       // Size / Grid
       this.setupSize()
@@ -118,8 +120,6 @@ function GridInput(options){
 
    this.move = function(e) {
       if(!this.holding) return
-      // Remove remove selection
-      this.removeSelection()
       // Get coordinates
       var mouseX = e.clientX - this.size.gridBox.left
       var mouseY = e.clientY - this.size.gridBox.top
@@ -129,11 +129,6 @@ function GridInput(options){
       this.movePointToValue(valueX, valueY)
       // Update Input
       this.setInputValue(valueX, valueY)
-   }
-
-   this.removeSelection = function() {
-      var selection = window.getSelection ? window.getSelection() : document.selection
-      selection && (selection.removeAllRanges ? selection.removeAllRanges() : selection.empty())
    }
 
    this.posToValue = function(x, y) {
