@@ -23,6 +23,7 @@
   z-index:10001;
   position:absolute;
   background:#FFF;
+  user-select:none;
 }
 
 .gridinput-wrapper .gridinput-canvas .gridinput-horizontal {
